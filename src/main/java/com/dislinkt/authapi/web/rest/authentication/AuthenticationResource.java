@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,13 +25,9 @@ import com.dislinkt.authapi.domain.user.User;
 import com.dislinkt.authapi.repository.UserRepository;
 import com.dislinkt.authapi.security.TokenUtils;
 import com.dislinkt.authapi.service.customuserdetails.CustomUserDetailsService;
-import com.dislinkt.authapi.service.user.UserService;
 import com.dislinkt.authapi.web.rest.user.payload.UserDTO;
 import com.dislinkt.authapi.web.rest.user.payload.UserLoginDTO;
 import com.dislinkt.authapi.web.rest.user.payload.UserTokenStateDTO;
-
-
-
 
 
 //Kontroler zaduzen za autentifikaciju korisnika
@@ -44,10 +38,6 @@ public class AuthenticationResource {
     @Autowired
     private TokenUtils tokenUtils;
 
-//    @Autowired 
-//	private AdminService adminService;
-//    @Autowired 
-//   	private RegisteredUserService regUserService;
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
@@ -56,15 +46,7 @@ public class AuthenticationResource {
     
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private UserService userService;
-    
-    @Autowired
-	private ApplicationEventPublisher eventPublisher;
-    
-  //  private AdminMapper adminMapper;
-//	private RegisteredUserMapper regUserMapper;
+
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -93,16 +75,7 @@ public class AuthenticationResource {
         return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
     }
     
-    @RequestMapping(value = "/current-user", method = RequestMethod.GET)
-    public ResponseEntity<?> getCurrentUser() {
-   
-    	Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-        String email = ((User) currentUser.getPrincipal()).getEmail();
 
-        UserDTO dbUser = userService.findByEmail(email);
-
-        return new ResponseEntity<>(dbUser, HttpStatus.OK);
-    }
 
     // Endpoint za registraciju novog korisnika
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)

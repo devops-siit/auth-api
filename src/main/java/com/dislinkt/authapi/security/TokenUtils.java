@@ -28,7 +28,7 @@ public class TokenUtils {
     public String SECRET;
 
     // Period vazenja
-    @Value("1800000") // 5h
+    @Value("18000000") // 5h in milliseconds
     private int EXPIRES_IN;
 
     // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
@@ -103,9 +103,9 @@ public class TokenUtils {
         User user = (User) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
-
+        
         return (username != null && username.equals(((User) userDetails).getEmail())
-                && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
+                && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()) && !isTokenExpired(token));
     }
 
     public String getUsernameFromToken(String token) {
