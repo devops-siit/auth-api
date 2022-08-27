@@ -33,14 +33,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 public class User extends BaseEntity implements UserDetails{
-
-	@Column(nullable = true)
-	protected String type;
 
 	@Column(nullable = true)
 	protected String firstName;
@@ -64,15 +59,13 @@ public class User extends BaseEntity implements UserDetails{
 	protected Boolean verified;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	//@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	protected Set<Authority> authority;
 
 	@Column(name = "last_password_reset_date",nullable = true)
     private Timestamp lastPasswordResetDate;
 	
 	
-
-
 	public void setPassword(String password) {
 		Timestamp now = new Timestamp(new Date().getTime());
         this.setLastPasswordResetDate(now);
