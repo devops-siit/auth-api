@@ -22,7 +22,6 @@ public class Authority extends BaseEntity implements GrantedAuthority{
 	@Column(unique = true, nullable = false)
 	private String role;
 
-
 	@Override
 	public String getAuthority() {
 		

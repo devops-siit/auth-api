@@ -5,20 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dislinkt.authapi.domain.user.User;
-import com.dislinkt.authapi.security.TokenUtils;
-import com.dislinkt.authapi.security.auth.TokenBasedAuthentication;
 import com.dislinkt.authapi.service.user.UserService;
 import com.dislinkt.authapi.web.rest.user.payload.UserDTO;
+import com.dislinkt.authapi.web.rest.user.payload.request.NewAccountRequest;
 
 
 @RestController
@@ -59,6 +54,22 @@ public class UserResource {
 		}
 		return new ResponseEntity<>(u, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
+    public ResponseEntity<?> addUser(@RequestBody NewAccountRequest accountRequest) throws Exception {
+    	UserDTO u = service.createUser(accountRequest);
+    	if(u != null)
+    		return new ResponseEntity<>(u, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+	
+	@RequestMapping(value = "/sign-up-admin", method = RequestMethod.POST)
+    public ResponseEntity<?> addAdmin(@RequestBody NewAccountRequest accountRequest) throws Exception {
+    	UserDTO u = service.createAdmin(accountRequest);
+    	if(u != null)
+    		return new ResponseEntity<>(u, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 	
 }
