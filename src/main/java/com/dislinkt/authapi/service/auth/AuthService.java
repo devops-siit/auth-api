@@ -59,7 +59,7 @@ public class AuthService {
         account.setEmail(request.getEmail());
         account.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        accountRepository.save(account);
+        accountRepository.insert(account);
 
         AccountCreatedEvent event = new AccountCreatedEvent();
         event.setUuid(account.getUuid());
