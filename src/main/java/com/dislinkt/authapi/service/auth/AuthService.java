@@ -6,6 +6,7 @@ import com.dislinkt.authapi.event.AccountRegistrationSource;
 import com.dislinkt.authapi.exception.types.EntityAlreadyExistsException;
 import com.dislinkt.authapi.exception.types.EntityNotFoundException;
 import com.dislinkt.authapi.repository.AccountRepository;
+import com.dislinkt.authapi.service.generator.SequenceGeneratorService;
 import com.dislinkt.authapi.web.rest.auth.payload.AccountDTO;
 import com.dislinkt.authapi.web.rest.auth.payload.JWTTokenDTO;
 import com.dislinkt.authapi.web.rest.auth.payload.LoginRequest;
@@ -21,6 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 @EnableBinding(AccountRegistrationSource.class)
@@ -31,6 +36,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private SequenceGeneratorService sequenceGenerator;
 
     @Autowired
     private AccountRegistrationSource accountRegistrationSource;
@@ -57,8 +65,8 @@ public class AuthService {
         Account account = new Account();
         account.setUsername(request.getUsername());
         account.setEmail(request.getEmail());
-        account.setPassword(passwordEncoder.encode(request.getPassword()));
-
+        account.setPassword(passwordEncoder.encode(request.getPassword()));        
+        account.setId(sequenceGenerator.generateSequence(Account.SEQUENCE_NAME));
         accountRepository.insert(account);
 
         AccountCreatedEvent event = new AccountCreatedEvent();
@@ -122,4 +130,18 @@ public class AuthService {
         return accountRepository.findOneByUsername(username).isPresent()
                 && accountRepository.findOneByEmail(email).isPresent();
     }
+
+	public Set<AccountDTO> getAll() {
+		Set<AccountDTO> retVal =new HashSet<AccountDTO>();
+		List<Account> found = accountRepository.findAll();
+		for(Account a: found) {
+			AccountDTO dto = new AccountDTO();
+			dto.setUsername(a.getUsername());
+			dto.setEmail(a.getEmail());
+			dto.setUuid(a.getUuid());
+			retVal.add(dto);
+		}
+		return retVal;
+		
+	}
 }

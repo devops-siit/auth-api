@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Setter
 public class BaseEntity {
 
-    @Id
-    private int id;
+	@Id
+    private long id;
 
     @NotNull
     @Size(min = 36, max = 36)
@@ -32,4 +32,6 @@ public class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    
+    
 }
