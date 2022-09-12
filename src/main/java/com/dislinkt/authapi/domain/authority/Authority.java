@@ -1,11 +1,7 @@
 package com.dislinkt.authapi.domain.authority;
 
-
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.dislinkt.authapi.domain.base.BaseEntity;
@@ -13,13 +9,13 @@ import com.dislinkt.authapi.domain.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Document
 @Getter
 @Setter
 public class Authority extends BaseEntity implements GrantedAuthority{
 
 
-	@Column(unique = true, nullable = false)
+	@Indexed(unique = true)
 	private String role;
 
 	@Override

@@ -1,32 +1,37 @@
 package com.dislinkt.authapi.domain.base;
 
 import com.dislinkt.authapi.util.HashValueProvider;
-import com.sun.istack.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Data
-@MappedSuperclass
+@Getter
+@Setter
 public class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+    private long id;
 
     @NotNull
     @Size(min = 36, max = 36)
-    @Column(unique = true)
+    @Indexed(unique = true)
     private String uuid = HashValueProvider.generateHash();
 
     @NotNull
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @UpdateTimestamp
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+    
+    
 }

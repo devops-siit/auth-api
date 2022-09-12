@@ -30,7 +30,7 @@ public class AuthorityService{
 	public Authority create(Authority entity) throws Exception {
 		Authority a = new Authority();
 		a.setRole(entity.getRole());
-		return authorityRepository.save(a);
+		return authorityRepository.insert(a);
 	}
 
 	public Authority update(Authority entity, Long id) throws Exception {
@@ -57,8 +57,11 @@ public class AuthorityService{
 	}
 
     public Set<Authority> findById(Long id) {
-        Authority auth = this.authorityRepository.getOne(id);
+        Authority auth = this.authorityRepository.findById(id).orElse(null);
         Set<Authority> auths = new HashSet<Authority>();
+        if(auth == null) {
+        	return auths;
+        }
         auths.add(auth);
         return auths;
     }
