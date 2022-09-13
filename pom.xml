@@ -101,6 +101,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>auth-api</name>
+			<url>https://maven.pkg.github.com/devops-siit/auth-api</url>
+		</repository>
+	</distributionManagement>
+
 	<profiles>
 		<profile>
 			<id>dev</id>
