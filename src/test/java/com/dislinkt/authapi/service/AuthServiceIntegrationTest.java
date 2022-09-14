@@ -25,6 +25,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
@@ -41,7 +42,7 @@ import com.dislinkt.authapi.web.rest.auth.payload.NewAccountRequest;
 
 
 @RunWith(SpringRunner.class)
-@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
+@DataMongoTest
 @TestExecutionListeners(
 	    listeners = {TransactionalTestExecutionListener.class, DependencyInjectionTestExecutionListener.class},
 	    inheritListeners = false    
@@ -124,13 +125,6 @@ public class AuthServiceIntegrationTest {
 	    );
 	    assertEquals("Password not valid", exception.getMessage());
 		
-	}
-	
-	@Test
-	public void testValidateToken() {
-		AccountDTO dto = service.validateToken(DB_ACCOUNT_TOKEN);
-		
-		assertEquals(DB_ACCOUNT_USERNAME, dto.getUsername());
 	}
 	
 	@Test

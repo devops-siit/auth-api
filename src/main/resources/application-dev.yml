@@ -3,9 +3,7 @@ server:
 spring:
   data:
     mongodb:
-      database: auth-db
-      host: mongodb
-      port: 27017
+      uri: mongodb://root:12345@localhost:27017/auth-db?authSource=admin&authMechanism=SCRAM-SHA-1
   rabbitmq:
     host: localhost
     port: 5672
