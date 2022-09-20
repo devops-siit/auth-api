@@ -128,7 +128,7 @@ public class AuthService {
 
     public boolean checkIfAccountExists(String username, String email) {
         return accountRepository.findOneByUsername(username).isPresent()
-                && accountRepository.findOneByEmail(email).isPresent();
+                || accountRepository.findOneByEmail(email).isPresent();
     }
 
 	public Set<AccountDTO> getAll() {
