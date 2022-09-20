@@ -153,7 +153,7 @@ public class AuthServiceIntegrationTest {
 	
 	@Test
 	public void testCheckIfAccountDoenstExist() {
-		boolean exists = service.checkIfAccountExists(DB_ACCOUNT_USERNAME, DB_UNKNOWN_EMAIL);
+		boolean exists = service.checkIfAccountExists(DB_UNKNOWN_USERNAME, DB_UNKNOWN_EMAIL);
 		
 		assertFalse(exists);
 	}
